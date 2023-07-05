@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "gpersoon",
+  "risk": "3",
+  "title": "Permission escalation by adding the same permission twice",
+  "issueId": 13,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/13"
+}
