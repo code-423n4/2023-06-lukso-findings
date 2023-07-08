@@ -1,6 +1,6 @@
 # Report
 
-## Non Critical Issues
+## Non Critical Issues 
 
 
 | |Issue|Instances|
