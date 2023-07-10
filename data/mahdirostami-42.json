@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "mahdirostami",
+  "risk": "2",
+  "title": "Function collision between extensions, ADDEXTENSIONS can not add extension  and user with ADDEXTENSIONS and CHANGEEXTENSIONS will change remove old extension unintentional",
+  "issueId": 42,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/42"
+}
