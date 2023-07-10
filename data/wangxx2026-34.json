@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "wangxx2026",
+  "risk": "3",
+  "title": "_checkOnERC721Received return value is incorrect",
+  "issueId": 34,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/34"
+}
