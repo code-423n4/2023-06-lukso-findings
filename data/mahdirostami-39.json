@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "mahdirostami",
+  "risk": "2",
+  "title": "tokens owned by the account and tokens in ERC725Y might be different",
+  "issueId": 39,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/39"
+}
