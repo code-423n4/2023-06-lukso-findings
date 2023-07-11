@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "Prestige",
+  "risk": "3",
+  "title": " Incorrect Bitwise Shift Operation in _validateCall Function",
+  "issueId": 45,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/45"
+}
