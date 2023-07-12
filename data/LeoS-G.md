@@ -8,7 +8,7 @@
 
 
 ## [G-01] Use  `do while`  loops instead of  `for`  loops
-Utilizing a do-while loop would result in a lower gas cost as the condition is not evaluated during the initial iteration.
+Utilizing a do-while loop would result in a lower gas cost as the condition is not evaluated during the initial iteration. This is only valid when it is sure the first iteration validate the condition.
 
 *5 instances*
 
@@ -131,7 +131,7 @@ With these changes, these evolutions in gas benchmark report can be observed (on
     LSP7Mintable: 1841837 -> 1840541 (-1296)
 
 ### [G-02] Make variable outside `for`/`while` loop
-With the exception of when the entry condition is not met, this saves gas, i.e. in the vast majority of cases.
+With the exception of when the entry condition is not met ot when there is few iteration, this saves gas.
 Obviously this is no longer valid if the variable is made in an `if` condition. This is why the potential `while` optimizations included in the in scope code are never valid.
 
 *3 instances*
