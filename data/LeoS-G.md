@@ -131,8 +131,7 @@ With these changes, these evolutions in gas benchmark report can be observed (on
     LSP7Mintable: 1841837 -> 1840541 (-1296)
 
 ### [G-02] Make variable outside `for`/`while` loop
-With the exception of when the entry condition is not met ot when there is few iteration, this saves gas.
-Obviously this is no longer valid if the variable is made in an `if` condition. This is why the potential `while` optimizations included in the in scope code are never valid.
+In some specific cases, it can save gases.
 
 *3 instances*
 - [LSP0ERC725AccountCore.sol#L175-L200)](https://github.com/code-423n4/2023-06-lukso/blob/main/contracts/LSP0ERC725Account/LSP0ERC725AccountCore.sol#L175-L200)
