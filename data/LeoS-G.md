@@ -221,10 +221,6 @@ In some specific case, it can save gases.
         }
 ```
 
-
-With these changes, these evolutions in gas benchmark report can be observed (only average values):
-
-
 ### [G-03] Ternary over  `if ... else`
 Replacing an `if-else` statement with the ternary operator can save gas.
 
