@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "Alhakista",
+  "risk": "2",
+  "title": "LSP17Extendable._fallbackLSP17Extendable() uses assembly - INLINE ASM",
+  "issueId": 58,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/58"
+}
