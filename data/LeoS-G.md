@@ -1,8 +1,8 @@
 ## Summary
 |        | Issue | Instances | Gas Saved |
 |--------|-------|-----------|-----------|
-| [G-01] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      6022     |
-|[G-02]|Make variable outside `for`/`while` loop|3|3696|
+| [G-01] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      -     |
+|[G-02]|Make variable outside `for`/`while` loop|3|-|
 |[G-03]|Ternary over  `if ... else`|4|52|
 |[G-04]|Use named return|2|10-26|
 
@@ -125,13 +125,8 @@ Utilizing a do-while loop would result in a lower gas cost as the condition is n
 +        }while(i < fromLength);
 ```
 
-With these changes, these evolutions in gas benchmark report can be observed (only average values):
-
-    LSP6KeyManager: 3403317 -> 3398591 (-4726)
-    LSP7Mintable: 1841837 -> 1840541 (-1296)
-
 ### [G-02] Make variable outside `for`/`while` loop
-In some specific cases, it can save gases.
+In some specific case, it can save gases.
 
 *3 instances*
 - [LSP0ERC725AccountCore.sol#L175-L200)](https://github.com/code-423n4/2023-06-lukso/blob/main/contracts/LSP0ERC725Account/LSP0ERC725AccountCore.sol#L175-L200)
@@ -229,9 +224,6 @@ In some specific cases, it can save gases.
 
 With these changes, these evolutions in gas benchmark report can be observed (only average values):
 
-    LSP6KeyManager: 3403317 -> 3403089 (-228)
-    LSP8Mintable: 2093802 -> 2092050 (-1752)
-    UniversalProfile: 2946134 -> 2944418 (-1716)
 
 ### [G-03] Ternary over  `if ... else`
 Replacing an `if-else` statement with the ternary operator can save gas.
