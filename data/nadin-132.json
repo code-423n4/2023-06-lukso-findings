@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "nadin",
+  "risk": "2",
+  "title": "In `LSP6SetDataModule.sol`, Infinite loop in `_verifyAllowedERC725YDataKeys()`  ",
+  "issueId": 132,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/132"
+}
