@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "Users with `ADDEXTENSIONS`/`CHANGEEXTENSIONS` permissions can indirectly allow anyone to re-enter KeyManager",
+  "issueId": 126,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/126"
+}
