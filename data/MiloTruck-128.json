@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "Allowing delegate call with `msg.value` in `executeBatch()` is dangerous",
+  "issueId": 128,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/128"
+}
