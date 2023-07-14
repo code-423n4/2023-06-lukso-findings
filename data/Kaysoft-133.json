@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "No validation check for whether the msg.value is not less than the value parameter in the execute function",
+  "issueId": 133,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/133"
+}
