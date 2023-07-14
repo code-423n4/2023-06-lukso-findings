@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "saneryee",
+  "risk": "2",
+  "title": "Condition will not revert when block.timestamp is == to the compared variable",
+  "issueId": 77,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/77"
+}
