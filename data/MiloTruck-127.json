@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "Avoid using the same ERC-165 interface ID for URDs and their callers",
+  "issueId": 127,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/127"
+}
