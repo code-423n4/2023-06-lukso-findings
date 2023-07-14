@@ -1,13 +1,105 @@
 ## Summary
 |        | Issue | Instances | Gas Saved |
 |--------|-------|-----------|-----------|
-| [G-01] |  Use `calldata` instead of `memory`     |     2      |      7382     |
-| [G-02] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      -     |
-|[G-03]|Make variable outside `for`/`while` loop|3|-|
-|[G-04]|Ternary over  `if ... else`|4|52|
-|[G-05]|Use named return|2|10-26|
+| [G-01] |  Enhance optimizer settings     |     -      |      109 676    |
+| [G-02] |  Use `calldata` instead of `memory`     |     2      |      7382     |
+| [G-03] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      -     |
+|[G-04]|Make variable outside `for`/`while` loop|3|-|
+|[G-05]|Ternary over  `if ... else`|4|52|
+|[G-06]|Use named return|2|10-26|
 
-### [G-01] Use `calldata` instead of `memory`
+
+## [G-01] Enhance optimizer settings
+The aim of this finding is to highlight the potential gains that can be achieved thanks to a good setting of the solidity optimizer. However, it includes an overlap with a known finding (*Reduce gas usage by moving to Solidity 0.8.19 or later*) in order to complete/correct it. To compare potential gains, the `forge test --gas-report` command is used with a fuzz seed of 0 and 10000 runs. The tests executed by this command are not exhaustive or fully representative of current contract usage. Nonetheless, it does highlight the potential gains offered by a suitable setup.
+
+### Activating the `--via-ir`
+This option allows YUL optimization. It is currently in heavy development and will allow the biggest gain. 
+With this activated, this option produces those results:
+
+| |`--via-ir`|
+|-|-|
+|Deployment Sum|-1357644|
+|Deployment %|-11.928|
+|Usage Sum|-63688|
+|Usage %|-3.015|
+
+Deployment sum should be understood as the difference between the sum of all deployment costs presented in the gas report before and after modification. Usage sum is the same thing, but for all the average usage costs. The % represents the percentage increase in relation to the initial value. 
+As can be seen here, gains from activating this option are by no means negligible.
+
+### Compiling with another version
+To perform those tests, the `--via-ir` options is activated. The results are thus compared with the ones from the previous change. A recent version of the compiler achieves better results with the optimizer, most of the time. But it is not always the case, and as this mostly works like a black box, it is hard to predict it. Thus, versions must be tested. 
+The results are presented below in the same format as before.
+
+|Version |0.8.14|0.8.15|0.8.16|0.8.17|0.8.18|0.8.19|0.8.20|
+|--|--|--|--|--|--|--|--|
+|Deployment Sum|156|0|-24016|-38446|-241086|-241086|-241086|
+|Deployment %|0.002|0.0|-0.24|-0.384|-2.405|-2.405|-2.405|
+|Usage Sum|-485|0|-13232|-13312|-16189|-16189|-16189|
+|Usage %|-0.024|0.0|-0.646|-0.65|-0.79|-0.79|-0.79|
+
+The actual setup version (`0.8.15`) seems to be the worst choice. Barring any special security constraints, it would be worthwhile changing versions. `0.8.18` is suggested, as it is both better known and more efficient. Further increases are pointless (this is the discrepancy with the optimization presented in the automatic findings, which suggest `0.8.19` without any additional value).
+
+### Change the number of runs
+To perform those tests, the `--via-ir` options is activated and the version `0.8.18` is used. The results are thus compared with the ones from the previous change. The optimizer must be set to a number of runs (200 by default), meaning how many times the contracts are meant to be used. A huge number of runs improves the running cost, but penalizes the deployment cost, and inversely. 
+The results are presented below in the same format as before.
+
+| Runs|1|10|50|100|500|1000|10000|20000|50000|100000|500000|
+|-|-|-|-|-|-|-|-|-|-|-|-|
+|Deployment Sum|-68874|-68874|-75290|-35230|175410|1110118|3408928|3841472|3841472|3841472|3841472|
+|Deployment %|-0.704|-0.704|-0.77|-0.36|1.793|11.347|34.845|39.266|39.266|39.266|39.266|
+|Usage Sum|10747|10603|7012|4767|-16327|-18692|-29933|-31754|-33636|-33636|-33636|
+|Usage %|0.529|0.522|0.345|0.235|-0.803|-0.92|-1.473|-1.562|-1.655|-1.655|-1.655|
+
+It's important to note that the number of runs has no impact on compilation time. The final choice will therefore depend on how much the deployer is willing to pay for this part.
+A good compromise seems to be 1000 runs, however, the best results are achieved at 10000.
+
+### Summary
+By comparing the default setup to the one with `via-ir`, version `0.8.18` and `10000` runs (of the optimizer). Those change in the usage gas of the gas report are observed.
+
+```markdown
+| tests/foundry/GasTests/LSP6s/LSP6ExecuteRC.sol:LSP6ExecuteRestrictedController contract   |            |           |            |
+|-------------------------------------------------------------------------------------------|------------|-----------|------------|
+| Function Name                                                                             | avg before | avg after | difference |
+| lsp20VerifyCall                                                                           | 17035      | 15705     | -1330      |
+| supportsInterface                                                                         | 560        | 344       | -216       |
+| transferLYXToEOA                                                                          | 57163      | 53654     | -3509      |
+| transferLYXToUP                                                                           | 31465      | 29381     | -2084      |
+| transferNFTToRandomEOA                                                                    | 130864     | 121749    | -8715      |
+| transferNFTToRandomUP                                                                     | 238712     | 224699    | -14013     |
+| transferTokensToRandomEOA                                                                 | 77091      | 69408     | -7683      |
+| transferTokensToRandomUP                                                                  | 211679     | 198115    | -13564     |
+|                                                                                           |            |           |            |
+|                                                                                           |            |           |            |
+| tests/foundry/GasTests/LSP6s/LSP6ExecuteUC.sol:LSP6ExecuteUnrestrictedController contract |            |           |            |
+| Function Name                                                                             | avg        | avg after | difference |
+| lsp20VerifyCall                                                                           | 17035      | 15705     | -1330      |
+| supportsInterface                                                                         | 560        | 344       | -216       |
+| transferLYXToEOA                                                                          | 56764      | 54612     | -2152      |
+| transferLYXToUP                                                                           | 33465      | 31381     | -2084      |
+| transferNFTToRandomEOA                                                                    | 128700     | 120825    | -7875      |
+| transferNFTToRandomUP                                                                     | 236549     | 223775    | -12774     |
+| transferTokensToRandomEOA                                                                 | 74387      | 68253     | -6134      |
+| transferTokensToRandomUP                                                                  | 208975     | 196960    | -12015     |
+|                                                                                           |            |           |            |
+|                                                                                           |            |           |            |
+| tests/foundry/GasTests/LSP6s/LSP6SetDataRC.sol:LSP6SetDataRestrictedController contract   |            |           |            |
+| Function Name                                                                             | avg        | avg after | difference |
+| execute                                                                                   | 28453      | 25853     | -2600      |
+| givePermissionsToController                                                               | 120527     | 118229    | -2298      |
+| restrictControllerToERC725YKeys                                                           | 138829     | 137062    | -1767      |
+| supportsInterface                                                                         | 537        | 344       | -193       |
+|                                                                                           |            |           |            |
+|                                                                                           |            |           |            |
+| tests/foundry/GasTests/LSP6s/LSP6SetDataUC.sol:LSP6SetDataUnrestrictedController contract |            |           |            |
+| Function Name                                                                             | avg        | avg after | difference |
+| execute                                                                                   | 28453      | 25853     | -2600      |
+| givePermissionsToController                                                               | 126527     | 124229    | -2598      |
+| restrictControllerToERC725YKeys                                                           | 147329     | 145562    | -1767      |
+| supportsInterface                                                                         | 537        | 344       | -189       |
+```
+The main point of this optimization is not to present the ideal setup, as this obviously varies according to future changes. But to show that setting up the optimizer should be the priority when it comes to saving gas, given how significant gains are.
+
+### [G-02] Use `calldata` instead of `memory`
 Using `calldata` instead of `memory` for function parameters can save gas if the argument is only read in the function
 
 *2 instances*
@@ -29,7 +121,7 @@ testHasPermissionShouldReturnTrueToAllRegularPermission(uint256) (gas: -1386 (-9
 Overall gas change: -7382 (-0.037%)
 ```
 
-### [G-02] Use  `do while`  loops instead of  `for`  loops
+### [G-03] Use  `do while`  loops instead of  `for`  loops
 Utilizing a do-while loop would result in a lower gas cost as the condition is not evaluated during the initial iteration. This is only valid when it is sure the first iteration validate the condition.
 
 *5 instances*
@@ -147,7 +239,7 @@ Utilizing a do-while loop would result in a lower gas cost as the condition is n
 +        }while(i < fromLength);
 ```
 
-### [G-03] Make variable outside `for`/`while` loop
+### [G-04] Make variable outside `for`/`while` loop
 In some specific case, it can save gases.
 
 *3 instances*
@@ -247,7 +339,7 @@ In some specific case, it can save gases.
 With these changes, these evolutions in gas benchmark report can be observed (only average values):
 
 
-### [G-04] Ternary over  `if ... else`
+### [G-05] Ternary over  `if ... else`
 Replacing an `if-else` statement with the ternary operator can save gas.
 
 *4 instances*
@@ -304,7 +396,7 @@ Replacing an `if-else` statement with the ternary operator can save gas.
 +     operatorsForTokenId[operatorListLength - 1];
 ```
 
-### [G-05] Use named return
+### [G-06] Use named return
 Using the named return whenever possible saves gas by avoiding a return and the double declaration of a variable.
 
 *2 instances*
