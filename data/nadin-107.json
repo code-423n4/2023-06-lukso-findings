@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "nadin",
+  "risk": "2",
+  "title": "Failed transfer with low level call could be overlooked",
+  "issueId": 107,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/107"
+}
