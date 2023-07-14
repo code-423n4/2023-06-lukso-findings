@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "Sathish9098",
+  "risk": "2",
+  "title": "The Loop implementation is wrong .  Loop always remove only first operator because  ``address operator = operatorsForTokenId.at(0)`` wrong implementation",
+  "issueId": 79,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/79"
+}
