@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "codegpt",
+  "risk": "2",
+  "title": "Lack of LSP1 Hook When Renouncing Ownership",
+  "issueId": 99,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/99"
+}
