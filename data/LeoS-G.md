@@ -1,13 +1,35 @@
 ## Summary
 |        | Issue | Instances | Gas Saved |
 |--------|-------|-----------|-----------|
-| [G-01] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      -     |
-|[G-02]|Make variable outside `for`/`while` loop|3|-|
-|[G-03]|Ternary over  `if ... else`|4|52|
-|[G-04]|Use named return|2|10-26|
+| [G-01] |  Use `calldata` instead of `memory`     |     2      |      7382     |
+| [G-02] |  Use  `do while`  loops instead of  `for`  loops     |     5      |      -     |
+|[G-03]|Make variable outside `for`/`while` loop|3|-|
+|[G-04]|Ternary over  `if ... else`|4|52|
+|[G-05]|Use named return|2|10-26|
 
+### [G-01] Use `calldata` instead of `memory`
+Using `calldata` instead of `memory` for function parameters can save gas if the argument is only read in the function
 
-## [G-01] Use  `do while`  loops instead of  `for`  loops
+*2 instances*
+
+-   [LSP1UniversalReceiverDelegateUP.sol#L83](https://github.com/code-423n4/2023-06-lukso/blob/main/contracts/LSP1UniversalReceiver/LSP1UniversalReceiverDelegateUP/LSP1UniversalReceiverDelegateUP.sol#L83)
+-   [LSP6Utils.sol#L153](https://github.com/code-423n4/2023-06-lukso/blob/main/contracts/LSP6KeyManager/LSP6Utils.sol#L153)
+
+*It may be possible that other instances are present, but only those whose impact is visible thanks to `forge snapshot --diff` are considered valid. There are also numerous instances that look similar but worsen the results and are therefore invalid. The result of `forge snapshot -diff` on the optimized code is shown below.*
+```
+testTransferNFTToRandomEOA() (gas: -620 (-0.026%))
+testTransferTokensToRandomEOA() (gas: -567 (-0.026%))
+testTransferNFTToRandomEOA() (gas: -620 (-0.028%))
+testTransferTokensToRandomEOA() (gas: -567 (-0.028%))
+testTransferNFTToRandomUP() (gas: -932 (-0.037%))
+testTransferTokensToRandomUP() (gas: -879 (-0.038%))
+testTransferNFTToRandomUP() (gas: -932 (-0.039%))
+testTransferTokensToRandomUP() (gas: -879 (-0.041%))
+testHasPermissionShouldReturnTrueToAllRegularPermission(uint256) (gas: -1386 (-9.064%))
+Overall gas change: -7382 (-0.037%)
+```
+
+### [G-02] Use  `do while`  loops instead of  `for`  loops
 Utilizing a do-while loop would result in a lower gas cost as the condition is not evaluated during the initial iteration. This is only valid when it is sure the first iteration validate the condition.
 
 *5 instances*
@@ -125,7 +147,7 @@ Utilizing a do-while loop would result in a lower gas cost as the condition is n
 +        }while(i < fromLength);
 ```
 
-### [G-02] Make variable outside `for`/`while` loop
+### [G-03] Make variable outside `for`/`while` loop
 In some specific case, it can save gases.
 
 *3 instances*
@@ -221,7 +243,11 @@ In some specific case, it can save gases.
         }
 ```
 
-### [G-03] Ternary over  `if ... else`
+
+With these changes, these evolutions in gas benchmark report can be observed (only average values):
+
+
+### [G-04] Ternary over  `if ... else`
 Replacing an `if-else` statement with the ternary operator can save gas.
 
 *4 instances*
@@ -278,7 +304,7 @@ Replacing an `if-else` statement with the ternary operator can save gas.
 +     operatorsForTokenId[operatorListLength - 1];
 ```
 
-### [G-04] Use named return
+### [G-05] Use named return
 Using the named return whenever possible saves gas by avoiding a return and the double declaration of a variable.
 
 *2 instances*
