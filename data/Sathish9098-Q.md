@@ -22,21 +22,136 @@ One way is to use a random salt. This will make it more difficult for an attacke
 
 ##
 
-## [L-2] Use safeTransfer/safeTransferFrom functions 
+## [L-2] In the constructor, there is no return of incorrect address identification 
 
-## Check transfer functions return values 
+### Impact
+The lack of "zero address" checks when assigning the "New Owner" can be a security vulnerability. This is because it allows an deployer to assign the "New Owner" to a zero address, which can then be the contract become without owner control and cause problem 
 
-## transfer function status must be checked 
+### POC
 
-## Lack of pricision
+```solidity
+FILE: 2023-06-lukso/contracts/LSP0ERC725Account/LSP0ERC725Account.sol
 
-## Avoid devide by zero 
+constructor(address initialOwner) payable {
+        if (msg.value != 0) {
+            emit ValueReceived(msg.sender, msg.value);
+        }
 
+        OwnableUnset._setOwner(initialOwner);
+    }
+}
 
+```
+https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa42958cae8/contracts/LSP0ERC725Account/LSP0ERC725Account.sol#L50-L56
 
+### Recommended Mitigation
+Should perform ``zero address`` checks when set New Owner
 
+##
 
+## [L-3] Use ``safeTransferOwnership`` instead of ``transferOwnership`` function
 
+### Impact
+transferOwnership function is used to change Ownership from Ownable.sol.
+
+Use a 2 structure transferOwnership which is safer. safeTransferOwnership, use it is more secure due to 2-stage ownership transfer.
+
+### POC
+
+```solidity
+FILE: Breadcrumbs2023-06-lukso/contracts/LSP0ERC725Account/LSP0ERC725AccountCore.sol
+
+565: LSP14Ownable2Step._transferOwnership(pendingNewOwner);
+586: LSP14Ownable2Step._transferOwnership(pendingNewOwner);
+
+```
+https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa42958cae8/contracts/LSP0ERC725Account/LSP0ERC725AccountCore.sol#L565
+
+### Recommendation: 
+
+Use Ownable2Step.sol 
+
+##
+
+## [L-4] Same name for two internal functions is confusing 
+
+ Yes, having two internal functions with the same name can be confusing. This is because it can be difficult to remember which function is being called when the name of the function is not unique
+
+https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa42958cae8/contracts/LSP6KeyManager/LSP6Modules/LSP6SetDataModule.sol#L62
+
+https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa42958cae8/contracts/LSP6KeyManager/LSP6Modules/LSP6SetDataModule.sol#L116
+
+##
+
+## [L-5] ``ECDSA.tryRecover`` does not handle the case where the signature is invalid
+
+The ECDSA.tryRecover function can return two different errors: ECDSA.RecoverError.NoError if the signature is valid, or ECDSA.RecoverError.InvalidSignature if the signature is invalid.
+If the signature is invalid, the tryRecover function will return the ECDSA.RecoverError.InvalidSignature error. However, the code you provided does not handle this case. Instead, it simply returns the _ERC1271_FAILVALUE constant, which is a value that is used to indicate that the signature is invalid.
+
+https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa42958cae8/contracts/LSP6KeyManager/LSP6KeyManagerCore.sol#L123-L124
+
+##
+
+## [L-6] Project Upgrade and Stop Scenario should be
+
+At the start of the project, the system may need to be stopped or upgraded, I suggest you have a script beforehand and add it to the documentation. This can also be called an ” EMERGENCY STOP (CIRCUIT BREAKER) PATTERN “.
+
+https://github.com/maxwoe/solidity_patterns/blob/master/security/EmergencyStop.sol
+
+##
+
+## [L-7] Insufficient coverage
+
+The test coverage rate of the project is ~90%. Testing all functions is best practice in terms of security criteria.
+
+Due to its capacity, test coverage is expected to be 100%.
+
+##
+
+## [L-8] Low-level calls that are unnecessary for the system should be avoided
+
+w-level calls that are unnecessary for the system should be avoided whenever possible because low-level calls behave differently from a contract-type call. For example;
+
+address.call(abi.encodeWithSelector("fancy(bytes32)", mybytes))`` does not verify that a target is actually a contract, while ContractInterface(address).fancy(mybytes) does.
+
+Additionally, when calling out to functions declared view/pure, the solidity compiler would actually perform a staticcall providing additional security guarantees while a low-level call does not. Similarly, return values have to be decoded manually when performing low-level calls.
+
+Note: if a low-level call needs to be performed, consider relying on Contract.function.selector instead of encoding using a hardcoded ABI string.
+
+```solidity
+
+File: contracts/LSP1UniversalReceiver/LSP1Utils.sol
+
+/// @audit `callUniversalReceiverWithCallerInfos()`
+57:          (bool success, bytes memory result) = universalReceiverDelegate.call(
+
+```
+
+https://github.com/code-423n4/2023-06-lukso/blob/09bbdd68eeba6ed4dd624286c94a1947f79c1959/contracts/LSP1UniversalReceiver/LSP1Utils.sol#L57-L57
+
+```solidity
+
+File: contracts/LSP20CallVerification/LSP20CallVerification.sol
+
+/// @audit `_verifyCall()`
+26:          (bool success, bytes memory returnedData) = logicVerifier.call(
+
+/// @audit `_verifyCallResult()`
+53:          (bool success, bytes memory returnedData) = logicVerifier.call(
+
+```
+https://github.com/code-423n4/2023-06-lukso/blob/09bbdd68eeba6ed4dd624286c94a1947f79c1959/contracts/LSP20CallVerification/LSP20CallVerification.sol#L26-L26
+
+```solidity
+File: submodules/ERC725/implementations/contracts/ERC725XCore.sol
+
+/// @audit `_executeCall()`
+186:         (bool success, bytes memory returnData) = target.call{value: value}(
+
+```
+https://github.com/ERC725Alliance/ERC725/blob/31574e1ac5259713e83c1b299800401a0737d483/implementations/contracts/ERC725XCore.sol#L186-L186
+
+##
 
 # NON CRITICAL
 
@@ -51,6 +166,14 @@ https://github.com/code-423n4/2023-06-lukso/blob/9dbc96410b3052fc0fd9d423249d1fa
 ## [NC-2] Use keccak256() instead of BytesLib.toBytes32()
 
 https://github.com/ERC725Alliance/ERC725/blob/7171a0e25e83cfe4c4dec6262bb62b4422c0478f/implementations/contracts/ERC725XCore.sol#L261
+
+##
+
+## [NC-3] Use SMTChecker
+
+The highest tier of smart contract behavior assurance is formal mathematical verification. All assertions that are made are guaranteed to be true across all inputs → The quality of your asserts is the quality of your verification.
+
+https://twitter.com/0xOwenThurm/status/1614359896350425088?t=dbG9gHFigBX85Rv29lOjIQ&s=19
 
 
 
