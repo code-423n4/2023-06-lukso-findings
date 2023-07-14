@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "LSP8 and LSP9's ERC-165 interface ID differs from their specification",
+  "issueId": 122,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/122"
+}
