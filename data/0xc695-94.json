@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "0xc695",
+  "risk": "3",
+  "title": "Potential Reversion in Transfer due to LSP1 Interface Support Check",
+  "issueId": 94,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/94"
+}
