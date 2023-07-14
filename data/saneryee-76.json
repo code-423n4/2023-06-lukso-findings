@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "saneryee",
+  "risk": "2",
+  "title": "_safeMint() should be used rather than _mint() wherever possible (Addendum)",
+  "issueId": 76,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/76"
+}
