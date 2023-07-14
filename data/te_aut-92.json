@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "te_aut",
+  "risk": "3",
+  "title": "abi.encodePacked() collision due to dynamic types usage that could lead to ",
+  "issueId": 92,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/92"
+}
