@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MiloTruck",
+  "risk": "2",
+  "title": "The owner of a `LSP0ERC725Account` can become the owner again after renouncing ownership",
+  "issueId": 124,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/124"
+}
