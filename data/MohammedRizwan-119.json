@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "MohammedRizwan",
+  "risk": "2",
+  "title": "tx.origin may be removed in future and its usage is not recommended",
+  "issueId": 119,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/119"
+}
