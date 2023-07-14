@@ -22,7 +22,15 @@ One way is to use a random salt. This will make it more difficult for an attacke
 
 ##
 
-## [L-2] 
+## [L-2] Use safeTransfer/safeTransferFrom functions 
+
+## Check transfer functions return values 
+
+## transfer function status must be checked 
+
+## Lack of pricision
+
+## Avoid devide by zero 
 
 
 
