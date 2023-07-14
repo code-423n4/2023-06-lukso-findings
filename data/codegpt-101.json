@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "codegpt",
+  "risk": "2",
+  "title": "Incorrect Interface ID for LSP14",
+  "issueId": 101,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/101"
+}
