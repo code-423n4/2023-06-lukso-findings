@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "adeolu",
+  "risk": "2",
+  "title": "possible revert due to improper subtraction in _extendableMsgData() of LSP17Extension.sol",
+  "issueId": 129,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/129"
+}
