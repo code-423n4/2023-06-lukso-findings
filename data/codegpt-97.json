@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "codegpt",
+  "risk": "3",
+  "title": "Insufficient Length Check When Verifying Allowed Data Keys",
+  "issueId": 97,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/97"
+}
