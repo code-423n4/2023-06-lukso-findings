@@ -1,0 +1,8 @@
+{
+  "contest": 253,
+  "handle": "Kaysoft",
+  "risk": "2",
+  "title": "All Ether sent to LSP0ERC725Account will be permanently locked",
+  "issueId": 110,
+  "issueUrl": "https://github.com/code-423n4/2023-06-lukso-findings/issues/110"
+}
